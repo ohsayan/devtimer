@@ -1,8 +1,9 @@
 [package]
 name = "devtimer"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Sayan Nandan <nandansayan@outlook.com>"]
 edition = "2018"
+readme = "README.md"
 description = "A simple library that provides a simple way to time operations"
 license = "Apache-2.0"
 documentation = "https://docs.rs/devtimer"
