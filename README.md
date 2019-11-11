@@ -1,4 +1,4 @@
-# Devtimer
+# Devtimer [![Build Status](https://travis-ci.com/sntdevco/devtimer.svg?branch=master)](https://travis-ci.com/sntdevco/devtimer) [![Crates.io](https://img.shields.io/crates/v/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/badge/docs.rs-Docs-blue)](https://docs.rs/devtimer) [![Crates.io](https://img.shields.io/crates/d/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/crates/l/devtimer)](./LICENSE)
 Operation benchmarking and timing library for Rust
 ### Rationale
 I've seen many, _many_ benchmarking tools. However, no one realizes that we need simplicity to simplify development and increase productivity. I recently have been up with a lot of perf-testing and I seem to run into a huge need for timing tools. I was initially using `std::time::Instant::now()`and then using the `duration_since()` to find the difference between the two intervals. That was fine, not that it didn't work, but there was a lot of redundancy. So I made a simple library which is a wrapper around the standard library `time` crate.
