@@ -40,6 +40,29 @@ impl DevTime {
     pub fn stop(&mut self) {
         self.stop = Some(time::Instant::now());
     }
+    /// Starts a timer after a specified duration
+    /// #### Example
+    /// ```rust
+    /// use devtimer;
+    /// use std::time::Duration;
+    /// let mut timer = DevTime::new();
+    /// timer.start_after(Duration::from_secs(2));
+    /// // The timer will automatically start after two seconds
+    /// do_some_long_operation();
+    /// println!("Time taken: {}", timer.time_in_secs().unwrap());
+    /// // The timer can be reused normally again
+    /// timer.start(); // this starts the timer instantly
+    /// do_another_long_operation();
+    /// timer.stop();
+    /// println!("Time taken: {}", timer.time_in_secs().unwrap());
+    /// ```
+    /// ### Important Note
+    /// This will try to be as precise as possible. However exact precision cannot be guranteed.
+    /// As tested on multiple platforms, there are variations in the range of 0 to 10 nanoseconds.
+    pub fn start_after(&mut self, dur: std::time::Duration) {
+        std::thread::sleep(dur);
+        self.start = Some(time::Instant::now());
+    }
     fn find_diff(&self) -> Option<time::Duration> {
         match self.start {
             Some(start) => match self.stop {
