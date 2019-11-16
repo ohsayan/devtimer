@@ -17,6 +17,13 @@ fn main() {
   // Do some really really long operation...
   devtimer.stop();
   println!("The operation took: {} nanoseconds", devtimer.time_in_nanos().unwrap());
+  
+  // With version 1.1.0 and upwards
+  devtimer.start_after(std::time::Duration::from_secs(2));
+  // The timer will start after two seconds
+  // Do some huge operation now
+  devtimer.stop();
+  println!("The operation took: {} nanoseconds", devtimer.time_in_nanos().unwrap());
 }
 ```
 ### Why are there no tests?
