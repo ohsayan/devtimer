@@ -5,7 +5,7 @@ All changes in this project will be noted in this file.
 
 Take a reference to `std::time::duration` instead of taking it's ownership.
 #### Upgrading exisiting code
-If you had done something like `timer.start_after(std::time::Duration::from_secs(2))`, all you need to do is add a borrow like show below:
+If you had done something like `timer.start_after(std::time::Duration::from_secs(2))`, all you need to do is add a borrow like shown below:
 ```rust
 timer.start_after(&std::time::Duration::from_secs(2))
 ```

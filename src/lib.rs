@@ -59,8 +59,8 @@ impl DevTime {
     /// ### Important Note
     /// This will try to be as precise as possible. However exact precision cannot be guranteed.
     /// As tested on multiple platforms, there are variations in the range of 0 to 10 nanoseconds.
-    pub fn start_after(&mut self, dur: std::time::Duration) {
-        std::thread::sleep(dur);
+    pub fn start_after(&mut self, dur: &std::time::Duration) {
+        std::thread::sleep(*dur);
         self.start = Some(time::Instant::now());
     }
     fn find_diff(&self) -> Option<time::Duration> {
