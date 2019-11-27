@@ -1,5 +1,9 @@
 # Changelog
 All changes in this project will be noted in this file.
+## Version 1.1.2 [2019-11-27]
+> No breaking changes in this release
+
+Fixed minor issues with the documentation which were slightly misleading
 ## Version 1.1.1 [2019-11-17]
 > This release introduces breaking changes!
 

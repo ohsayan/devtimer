@@ -5,3 +5,4 @@ jobs:
   fast_finish: true
 script:
  - cargo build --verbose --all
+dist: bionic
