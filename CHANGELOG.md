@@ -1,5 +1,15 @@
 # Changelog
 All changes in this project will be noted in this file.
+## Version 2.0.0 [2020-05-09]
+> No breaking changes in this release
+
+This release adds the new `run_through()` feature. This new feature completes the gap that was left
+in building the _complete_ benchmarking suite for Rust. A single benchmark doesn't say much, so
+it is far better to run the benchmark over and over again to see how it perform on average.
+The `run_through()` function does exactly that. It accepts the number of iterations as an `usize`
+and the benchmark code, either as a closure (`|| {}`) or a function directly. So now that you've
+got a complete benchmarking suite, why not benchmark some code?
+
 ## Version 1.1.2 [2019-11-27]
 > No breaking changes in this release
 
