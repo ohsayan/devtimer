@@ -21,7 +21,7 @@
 //! }
 //! ```
 //! ## Advanced usage example
-//! 
+//!
 //! ```
 //! use devtimer::DevTime;
 //! fn main() {
@@ -35,18 +35,167 @@
 //!     bench_result.print_stats();
 //! }
 //! ```
-//! 
+//!
+use std::collections::HashMap;
 use std::time;
 /// The `DevTime` struct provides a simple implementation
 /// for benchmarking operations using the standard library.
-pub struct DevTime {
+pub struct DevTime {}
+
+impl DevTime {
+    pub fn new_simple() -> SimpleTimer {
+        SimpleTimer::new()
+    }
+    pub fn new_complex() -> ComplexTimer {
+        ComplexTimer::new()
+    }
+}
+
+pub struct ComplexTimer {
+    timers: HashMap<&'static str, SimpleTimer>,
+}
+
+impl ComplexTimer {
+    pub fn new() -> Self {
+        ComplexTimer {
+            timers: HashMap::new(),
+        }
+    }
+    pub fn create_timer(&mut self, timer_name: &'static str) -> Result<(), &'static str> {
+        if self.timers.contains_key(timer_name) {
+            Err("This timer already exists")
+        } else {
+            let _ = self.timers.insert(
+                timer_name,
+                SimpleTimer {
+                    start: None,
+                    stop: None,
+                },
+            );
+            Ok(())
+        }
+    }
+    pub fn start_timer(&mut self, timer_name: &'static str) -> Result<(), &'static str> {
+        match self.timers.get_mut(timer_name) {
+            None => return Err("This timer does not exist"),
+            Some(x) => {
+                x.start = Some(time::Instant::now());
+                Ok(())
+            }
+        }
+    }
+    pub fn stop_timer(&mut self, timer_name: &'static str) -> Result<(), &'static str> {
+        match self.timers.get_mut(timer_name) {
+            None => return Err("This timer does not exist"),
+            Some(x) => {
+                x.stop = Some(time::Instant::now());
+                Ok(())
+            }
+        }
+    }
+    pub fn time_in_secs(&self, timer_name: &'static str) -> Option<u64> {
+        match self.timers.get(timer_name) {
+            Some(t) => match t.find_diff() {
+                Some(diff) => Some(diff.as_secs()),
+                None => None,
+            },
+            None => return None,
+        }
+    }
+
+    pub fn time_in_millis(&self, timer_name: &'static str) -> Option<u128> {
+        match self.timers.get(timer_name) {
+            Some(t) => match t.find_diff() {
+                Some(diff) => Some(diff.as_millis()),
+                None => None,
+            },
+            None => return None,
+        }
+    }
+
+    pub fn time_in_micros(&self, timer_name: &'static str) -> Option<u128> {
+        match self.timers.get(timer_name) {
+            Some(t) => match t.find_diff() {
+                Some(diff) => Some(diff.as_micros()),
+                None => None,
+            },
+            None => return None,
+        }
+    }
+
+    pub fn time_in_nanos(&self, timer_name: &'static str) -> Option<u128> {
+        match self.timers.get(timer_name) {
+            Some(t) => match t.find_diff() {
+                Some(diff) => Some(diff.as_nanos()),
+                None => None,
+            },
+            None => return None,
+        }
+    }
+    pub fn run_through(
+        &mut self,
+        timer_name: &'static str,
+        iters: usize,
+        function: fn() -> (),
+    ) -> Result<RunThroughReport, ()> {
+        let timer = match self.timers.get_mut(timer_name) {
+            Some(t) => t,
+            None => return Err(()),
+        };
+        let mut res = Vec::new();
+        for i in 0..iters {
+            println!("Running iter {} ...", i + 1);
+            timer.start();
+            (function)();
+            timer.stop();
+            res.push(timer.time_in_nanos().unwrap());
+        }
+        res.sort();
+        let realindex = res.len() - 1;
+        let fastest = res[0];
+        let slowest = res[realindex];
+        let mut tot = 0;
+        res.into_iter().for_each(|x| {
+            tot += x;
+        });
+        let avg: u128 = tot / (realindex as u128);
+        Ok(RunThroughReport {
+            fastest,
+            slowest,
+            avg,
+        })
+    }
+    
+    pub fn delete_timer(&mut self, timer_name: &'static str) -> Result<(), &'static str> {
+        match self.timers.remove_entry(timer_name) {
+            Some(_) => return Ok(()),
+            None => return Err("This timer does not exist"),
+        }
+    }
+
+    pub fn clear_timers(&mut self) {
+        self.timers.clear();
+    }
+
+    pub fn print_results(&self) {
+        println!("");
+        for (k, v) in self.timers.iter() {
+            println!("{} - {} ns", k, v.time_in_nanos().unwrap());
+        }
+    }
+    pub fn iter(&self) -> std::collections::hash_map::Iter<&'static str, SimpleTimer> {
+        self.timers.iter()
+    }
+}
+
+pub struct SimpleTimer {
     start: Option<time::Instant>,
     stop: Option<time::Instant>,
 }
-impl DevTime {
+impl SimpleTimer {
     /// Returns a new instance of the `DevTime` struct
     pub fn new() -> Self {
-        DevTime {
+        SimpleTimer {
             start: None,
             stop: None,
         }
@@ -153,7 +302,7 @@ impl DevTime {
     ///     bench_result.print_stats();
     /// }
     /// ```
-    /// 
+    ///
     pub fn run_through(&mut self, iters: usize, function: fn() -> ()) -> RunThroughReport {
         let mut res = Vec::new();
         for i in 0..iters {
@@ -191,9 +340,9 @@ pub struct RunThroughReport {
 }
 impl RunThroughReport {
     pub fn print_stats(&self) {
-        println!("\nSlowest: {}ns", self.slowest);
-        println!("Fastest: {}ns", self.fastest);
-        println!("Average: {}ns/iter", self.avg);
+        println!("\nSlowest: {} ns", self.slowest);
+        println!("Fastest: {} ns", self.fastest);
+        println!("Average: {} ns/iter", self.avg);
     }
     pub fn get_fastest(&self) -> u128 {
         self.fastest
@@ -205,11 +354,33 @@ impl RunThroughReport {
         self.avg
     }
 }
+
 #[test]
-fn test_run_through_impl() {
-    let mut dt = DevTime::new();
-    dt.run_through(10, || {
-        std::thread::sleep(std::time::Duration::from_nanos(100));
-    })
-    .print_stats();
+fn check_complex_timer_impl() {
+    let mut dt = DevTime::new_complex();
+    
+    dt.create_timer("randomthread").unwrap();
+    dt.run_through("randomthread", 10, || {
+        std::thread::sleep(std::time::Duration::from_micros(15));
+    }).unwrap().print_stats();
+    
+    dt.create_timer("pk12").unwrap();
+    dt.start_timer("pk12").unwrap();
+    std::thread::sleep(std::time::Duration::from_micros(12));
+    dt.stop_timer("pk12").unwrap();
+    println!("The operation took: {} us", dt.time_in_micros("pk12").unwrap());
+
+    dt.create_timer("arg2").unwrap();
+    dt.start_timer("arg2").unwrap();
+    std::thread::sleep(std::time::Duration::from_micros(45));
+    dt.stop_timer("arg2").unwrap();
+    println!("The operation took: {} us", dt.time_in_micros("arg2").unwrap());
+
+    for (timer, result) in dt.iter() {
+        println!("Timer: {} - {}", timer, result.time_in_nanos().unwrap());
+    }
+
+    dt.print_results();
+    // Now delete all timers
+    dt.clear_timers();
 }
