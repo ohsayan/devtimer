@@ -23,7 +23,7 @@ use devtimer::DevTime;
 Let's say there are two functions called `very_long_operation()` and `another_op()` that take a very long time to execute. Then we can time it's execution as shown below:
 ```rust
 fn main() {
-    let mut timer = DevTime::new();
+    let mut timer = DevTime::new_simple();
     timer.start();
     very_long_operation();
     timer.stop();
@@ -45,19 +45,50 @@ fn main() {
     println!("The operation took: {} nanoseconds", devtimer.time_in_nanos().unwrap());
 }
 ```
-## Advanced Usage (for `2.0.0` and up)
+## Example: Benchmarking (for `3.0.0` and up)
 
 ```rust
-use devtimer::DevTime;
+use devtimer::run_benchmark;
 fn main() {
-  let mut dt = DevTime::new();
   // We will simulate a long operation by std::thread::sleep()
   // Run 10 iterations for the test
-  let bench_result = dt.run_through(10, || {
+  let bench_result = run_benchmark(10, || {
     // Fake a long running operation
     std::thread::sleep(std::time::Duration::from_secs(1);
   });
   bench_result.print_stats();
+}
+```
+## Example: Tagged timers (for `3.0.0` and up)
+
+```rust
+use devtimer::DevTime;
+fn main() {
+  let mut cmplx = DevTime::new_complex();
+  // Create a timer with tag `timer-1`
+  cmplx.create_timer("timer-1").unwrap();
+  cmplx.start_timer("timer-1").unwrap();
+  // Simulate a slow operation
+  std::thread::sleep(std::time::Duration::from_secs(1));
+  cmplx.stop_timer("timer-1").unwrap();
+  
+  // Create a timer with tag `cool-timer`
+  cmplx.create_timer("cool-timer").unwrap();
+  cmplx.start_timer("cool-timer").unwrap();
+  // Simulate a slow operation
+  std::thread::sleep(std::time::Duration::from_secs(2));
+  cmplx.stop_timer("cool-timer").unwrap();
+
+  // We can output a benchmark in this way
+  println!("`cool-timer` took: {}", cmplx.time_in_micros("cool-timer").unwrap());
+
+  // Or we can iterate through all timers
+  for (tname, timer) in cmplx.iter() {
+    println!("{} - {} ns", tname, timer.time_in_micros().unwrap());
+  }
+
+  // Or we can print results in the default '{timername} - {time} ns' format
+  cmplx.print_stats();
 }
 ```
 

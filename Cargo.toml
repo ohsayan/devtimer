@@ -1,10 +1,10 @@
 [package]
 name = "devtimer"
-version = "2.0.0"
+version = "3.0.0"
 authors = ["Sayan Nandan <nandansayan@outlook.com>"]
 edition = "2018"
 readme = "README.md"
-description = "A simple library that provides a simple way to time operations"
+description = "A simple library for benchmarking code"
 license = "Apache-2.0"
 documentation = "https://docs.rs/devtimer"
 repository = "https://github.com/sntdevco/devtimer"
