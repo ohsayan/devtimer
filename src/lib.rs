@@ -93,6 +93,7 @@ pub struct DevTime {}
 pub fn run_benchmark(iters: usize, function: fn() -> ()) -> RunThroughReport {
     let mut timer = DevTime::new_simple();
     let mut res = Vec::with_capacity(iters);
+    let total_count = iters;
     for i in 0..iters {
         println!("Running iter {} ...", i + 1);
         timer.start();
@@ -106,9 +107,9 @@ pub fn run_benchmark(iters: usize, function: fn() -> ()) -> RunThroughReport {
     let slowest = res[realindex];
     let mut tot = 0;
     res.into_iter().for_each(|x| {
-        tot += x;
+        tot = tot + x;
     });
-    let avg: u128 = tot / (realindex as u128);
+    let avg: u128 = tot / (total_count as u128);
     RunThroughReport {
         fastest,
         slowest,
@@ -237,7 +238,7 @@ impl ComplexTimer {
     }
 
     /// Print all results in the following format:
-    /// 
+    ///
     /// ```log
     /// timerx - 120 ns
     /// timery - 1233 ns
@@ -361,7 +362,7 @@ impl SimpleTimer {
         }
     }
     #[deprecated(
-        note = "Consider using the `devtimer::run_benchmark()` function instead",
+        note = "Consider using the `devtimer::run_benchmark()` function instead. This function will be removed in a future release",
         since = "3.0.0"
     )]
     /// Benchmark an operation by running multiple iterations.
@@ -381,9 +382,10 @@ impl SimpleTimer {
     ///     bench_result.print_stats();
     /// }
     /// ```
-    /// 
+    ///
     pub fn run_through(&mut self, iters: usize, function: fn() -> ()) -> RunThroughReport {
         let mut res = Vec::new();
+        let total_count = iters;
         for i in 0..iters {
             println!("Running iter {} ...", i + 1);
             self.start();
@@ -399,7 +401,7 @@ impl SimpleTimer {
         res.into_iter().for_each(|x| {
             tot += x;
         });
-        let avg: u128 = tot / (realindex as u128);
+        let avg: u128 = tot / (total_count as u128);
         RunThroughReport {
             fastest,
             slowest,
@@ -475,6 +477,7 @@ fn test_benchmark_impl() {
     use run_benchmark;
     let bench1 = run_benchmark(10, || {
         // Simulate a fake slow operation
+        std::thread::sleep(time::Duration::from_secs(1));
     });
     // Print the results
     bench1.print_stats();

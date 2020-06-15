@@ -1,6 +1,11 @@
 # Changelog
 All changes in this project will be noted in this file.
 
+## Version 3.0.1 [2020-06-15]
+> No breaking changes in this release
+
+Fixes issue #2 where the average was calculated incorrectly.
+
 ## Version 3.0.0 [2020-05-21]
 > This release introduces breaking changes!
 
