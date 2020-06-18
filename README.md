@@ -1,4 +1,4 @@
-# Devtimer [![Build Status](https://travis-ci.com/sntdevco/devtimer.svg?branch=master)](https://travis-ci.com/sntdevco/devtimer) [![Crates.io](https://img.shields.io/crates/v/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/badge/docs.rs-Docs-blue)](https://docs.rs/devtimer) [![Crates.io](https://img.shields.io/crates/d/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/crates/l/devtimer)](./LICENSE)
+# Devtimer [![Build Status](https://travis-ci.com/ohsayan/devtimer.svg?branch=master)](https://travis-ci.com/ohsayan/devtimer) [![Crates.io](https://img.shields.io/crates/v/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/badge/docs.rs-Docs-blue)](https://docs.rs/devtimer) [![Crates.io](https://img.shields.io/crates/d/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/crates/l/devtimer)](./LICENSE)
 The **compact** yet **complete** benchmarking suite for Rust. Period.
 # Rationale
 I've seen many, _many_ benchmarking tools. However, no one realizes that we need simplicity to simplify development and increase productivity. 
@@ -102,7 +102,7 @@ See the full docs [here](https://docs.rs/devtimer).
 # Why are there no tests?
 Well, there would be no possible test that I can think of that'd run uniformly across all systems. If I did something like:
 ```rust
-let mut timer = DevTime::new();
+let mut timer = DevTime::new_simple();
 timer.start();
 std::thread::sleep(std::time::Duration::from_secs(2));
 timer.stop();

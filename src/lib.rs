@@ -93,7 +93,6 @@ pub struct DevTime {}
 pub fn run_benchmark(iters: usize, function: fn() -> ()) -> RunThroughReport {
     let mut timer = DevTime::new_simple();
     let mut res = Vec::with_capacity(iters);
-    let total_count = iters;
     for i in 0..iters {
         println!("Running iter {} ...", i + 1);
         timer.start();
@@ -105,11 +104,8 @@ pub fn run_benchmark(iters: usize, function: fn() -> ()) -> RunThroughReport {
     let realindex = res.len() - 1;
     let fastest = res[0];
     let slowest = res[realindex];
-    let mut tot = 0;
-    res.into_iter().for_each(|x| {
-        tot = tot + x;
-    });
-    let avg: u128 = tot / (total_count as u128);
+    let sum: u128 = res.into_iter().sum();
+    let avg: u128 = sum / (iters as u128);
     RunThroughReport {
         fastest,
         slowest,
@@ -359,53 +355,6 @@ impl SimpleTimer {
         match self.find_diff() {
             Some(duration) => return Some(duration.as_secs()),
             _ => None,
-        }
-    }
-    #[deprecated(
-        note = "Consider using the `devtimer::run_benchmark()` function instead. This function will be removed in a future release",
-        since = "3.0.0"
-    )]
-    /// Benchmark an operation by running multiple iterations.
-    /// This function returns a `RunThroughReport` object which can be used to get
-    /// the benchmark results.
-    /// ## Example
-    /// ```
-    /// use devtimer::DevTime;
-    /// fn main() {
-    ///     let mut dt = DevTime::new();
-    ///     // Run 10 iterations
-    ///     let bench_result = dt.run_through(10, || {
-    ///         // Fake a slow operation
-    ///         std::thread::sleep(std::time::Duration::from_nanos(10000));
-    ///     });
-    ///     // Now print the benchmark results
-    ///     bench_result.print_stats();
-    /// }
-    /// ```
-    ///
-    pub fn run_through(&mut self, iters: usize, function: fn() -> ()) -> RunThroughReport {
-        let mut res = Vec::new();
-        let total_count = iters;
-        for i in 0..iters {
-            println!("Running iter {} ...", i + 1);
-            self.start();
-            (function)();
-            self.stop();
-            res.push(self.time_in_nanos().unwrap());
-        }
-        res.sort();
-        let realindex = res.len() - 1;
-        let fastest = res[0];
-        let slowest = res[realindex];
-        let mut tot = 0;
-        res.into_iter().for_each(|x| {
-            tot += x;
-        });
-        let avg: u128 = tot / (total_count as u128);
-        RunThroughReport {
-            fastest,
-            slowest,
-            avg,
         }
     }
 }
