@@ -7,7 +7,7 @@ readme = "README.md"
 description = "A simple library for benchmarking code"
 license = "Apache-2.0"
 documentation = "https://docs.rs/devtimer"
-repository = "https://github.com/sntdevco/devtimer"
+repository = "https://github.com/ohsayan/devtimer"
 categories = []
 keywords = ["timer", "chrono", "development", "testing", "benchmark"]
 [dependencies]

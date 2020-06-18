@@ -1,4 +1,4 @@
-# Devtimer [![Build Status](https://travis-ci.com/sntdevco/devtimer.svg?branch=master)](https://travis-ci.com/sntdevco/devtimer) [![Crates.io](https://img.shields.io/crates/v/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/badge/docs.rs-Docs-blue)](https://docs.rs/devtimer) [![Crates.io](https://img.shields.io/crates/d/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/crates/l/devtimer)](./LICENSE)
+# Devtimer [![Build Status](https://travis-ci.com/ohsayan/devtimer.svg?branch=master)](https://travis-ci.com/ohsayan/devtimer) [![Crates.io](https://img.shields.io/crates/v/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/badge/docs.rs-Docs-blue)](https://docs.rs/devtimer) [![Crates.io](https://img.shields.io/crates/d/devtimer)](https://crates.io/crates/devtimer) [![Crates.io](https://img.shields.io/crates/l/devtimer)](./LICENSE)
 The **compact** yet **complete** benchmarking suite for Rust. Period.
 # Rationale
 I've seen many, _many_ benchmarking tools. However, no one realizes that we need simplicity to simplify development and increase productivity. 
