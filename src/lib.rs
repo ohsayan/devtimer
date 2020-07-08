@@ -90,7 +90,7 @@ pub struct DevTime {}
 /// }
 /// ```
 ///
-pub fn run_benchmark(iters: usize, function: fn() -> ()) -> RunThroughReport {
+pub fn run_benchmark(iters: usize, function: impl Fn()) -> RunThroughReport {
     let mut timer = DevTime::new_simple();
     let mut res = Vec::with_capacity(iters);
     for i in 0..iters {
@@ -249,10 +249,12 @@ impl ComplexTimer {
     /// Returns an iterator of timer tags and the corresponding `SimpleTimer` instances
     /// # Example
     /// ```
-    /// // Assume some `ComplexTimer` instanc `dt` exists
-    /// let mut dt = DevTime::new_complex();
-    /// for (name, timer) in dt.iter() {
-    ///     println!("Timer: {} took {} ns", name, timer.time_in_nanos());
+    /// use devtimer::DevTime;
+    /// fn main() {
+    ///     let mut dt = DevTime::new_complex();
+    ///     for (name, timer) in dt.iter() {
+    ///         println!("Timer: {} took {} ns", name, timer.time_in_nanos());
+    ///     }
     /// }
     /// ```
     pub fn iter(&self) -> std::collections::hash_map::Iter<&'static str, SimpleTimer> {
