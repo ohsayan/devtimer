@@ -90,13 +90,13 @@ pub struct DevTime {}
 /// }
 /// ```
 ///
-pub fn run_benchmark(iters: usize, function: impl Fn()) -> RunThroughReport {
+pub fn run_benchmark(iters: usize, function: impl Fn(usize)) -> RunThroughReport {
     let mut timer = DevTime::new_simple();
     let mut res = Vec::with_capacity(iters);
     for i in 0..iters {
         println!("Running iter {} ...", i + 1);
         timer.start();
-        (function)();
+        (function)(i);
         timer.stop();
         res.push(timer.time_in_nanos().unwrap());
     }
@@ -426,7 +426,7 @@ fn check_complex_timer_impl() {
 #[test]
 fn test_benchmark_impl() {
     use run_benchmark;
-    let bench1 = run_benchmark(10, || {
+    let bench1 = run_benchmark(10, |_| {
         // Simulate a fake slow operation
         std::thread::sleep(time::Duration::from_secs(1));
     });

@@ -1,6 +1,16 @@
 # Changelog
 All changes in this project will be noted in this file.
 
+## Version 4.0.0
+
+> This release introduces breaking changes!
+
+The `run_benchmark()` function now enables the use of an `usize` within the closure/function for enabling access to data arrays which are extensively used while benchmarking. See [Advanced benchmarking](./README.md#advanced-benchmarking)
+
+### Upgrading existing code
+
+If you previously used `run_benchmark()` in the following way: `run_benchmark(100, || {})` , then you'll have to change it to: `run_benchmark(100, |_| {})` . 
+
 ## Version 3.0.3
 
 > No breaking changes in this release
