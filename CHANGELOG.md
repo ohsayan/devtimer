@@ -1,5 +1,17 @@
 # Changelog
+
 All changes in this project will be noted in this file.
+
+## Note on semver compatibility
+
+Due to initial problems with local cargo configurations (and some automated scripts), some versions were tagged incorrectly. However, all versions **strictly follow semver since 0.3.0**. For versions **prior to `0.3.0`**, please refer to the small quote box which will indicate if the release introduces any breaking changes or not. I am very sorry for any inconvenience that this may
+have caused.
+
+## Version 4.0.1
+
+> No breaking changes
+
+This releases fixes several misleading docs and improves the examples.
 
 ## Version 4.0.0
 
@@ -15,7 +27,7 @@ If you previously used `run_benchmark()` in the following way: `run_benchmark(10
 
 > No breaking changes in this release
 
-No major changes except for changing the `run_benchmark()` function's `function` argument's type to `impl Fn()` 
+No major changes except for changing the `run_benchmark()` function's `function` argument's type to `impl Fn()`
 
 ## Version 3.0.2
 
@@ -42,9 +54,8 @@ immediately. This is ideal when you're benchmarking an operation and then printi
 or storing the results right away. However, if you want a timername/timer
 way of benchmarking, then `ComplexTimer` is for you. 
 
-* Also, the `run_through()` 
-
-feature has now been deprecated and instead, you can use the function `run_benchmark()` 
+* Also, the `run_through()`
+feature has now been deprecated and instead, you can use the function `run_benchmark()`
 which does the same thing. The function was moved out since it didn't rely on a 
 specific instance of a `SimpleTimer` (or previously `DevTime` ) object.
 
@@ -73,7 +84,7 @@ fn main() {
 This release adds the new `run_through()` feature. This new feature completes the gap that was left
 in building the _complete_ benchmarking suite for Rust. A single benchmark doesn't say much, so
 it is far better to run the benchmark over and over again to see how it perform on average.
-The `run_through()` function does exactly that. It accepts the number of iterations as an `usize` 
+The `run_through()` function does exactly that. It accepts the number of iterations as an `usize`
 and the benchmark code, either as a closure ( `|| {}` ) or a function directly. So now that you've
 got a complete benchmarking suite, why not benchmark some code?
 

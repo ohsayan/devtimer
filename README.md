@@ -77,7 +77,7 @@ fn main() {
 
 The `run_benchmark()` function also provides a `usize` that can be used, say if you want to get something from an array to do the test. For example:
 
-``` 
+```rust 
 run_benchmark(100, |n| {
   do_action(data_source[n]);
 });

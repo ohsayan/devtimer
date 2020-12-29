@@ -4,5 +4,5 @@ rust:
 jobs:
   fast_finish: true
 script:
- - cargo test --verbose
-dist: bionic
+ - cargo test --all --verbose
+dist: focal
