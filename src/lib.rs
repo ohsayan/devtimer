@@ -28,7 +28,7 @@
 //! fn main() {
 //!     // We will simulate a long operation by std::thread::sleep()
 //!     // Run 10 iterations for the test
-//!     let bench_result = run_benchmark(10, || {
+//!     let bench_result = run_benchmark(10, |_| {
 //!         // Fake a long running operation
 //!         std::thread::sleep(std::time::Duration::from_secs(1));
 //!     });
@@ -37,6 +37,7 @@
 //! ```
 //! ## Examples: `DevTime::new_complex()`
 //! ```
+//! use devtimer::DevTime;
 //! let mut dt = DevTime::new_complex();
 //!
 //! // Create a new timer tag `pk12`
@@ -81,7 +82,7 @@ pub struct DevTime {}
 /// use devtimer::run_benchmark;
 /// fn main() {
 ///     // Run 10 iterations
-///     let bench_result = run_benchmark(10, || {
+///     let bench_result = run_benchmark(10, |_| {
 ///         // Fake a slow operation
 ///         std::thread::sleep(std::time::Duration::from_nanos(10000));
 ///     });
@@ -253,7 +254,7 @@ impl ComplexTimer {
     /// fn main() {
     ///     let mut dt = DevTime::new_complex();
     ///     for (name, timer) in dt.iter() {
-    ///         println!("Timer: {} took {} ns", name, timer.time_in_nanos());
+    ///         println!("Timer: {} took {} ns", name, timer.time_in_nanos().unwrap());
     ///     }
     /// }
     /// ```
@@ -289,10 +290,11 @@ impl SimpleTimer {
     /// use devtimer::DevTime;
     /// use std::time::Duration;
     /// fn main() {
-    ///     let mut timer = DevTime::new();
+    ///     let mut timer = DevTime::new_simple();
     ///     timer.start_after(&Duration::from_secs(2));
     ///     // The timer will automatically start after two seconds
     ///     // do_some_long_operation();
+    ///     timer.stop();
     ///     println!("Time taken: {}", timer.time_in_secs().unwrap());
     ///     // The timer can be reused normally again
     ///     timer.start(); // this starts the timer instantly
@@ -361,7 +363,7 @@ impl SimpleTimer {
     }
 }
 /// The `RunThroughReport` struct provides a benchmark report when calling
-/// `DevTime::run_through()`.
+/// `DevTime::run_benchmark()`.
 /// You can get the slowest, fastest and the average time taken per iteration
 /// by the `get_slowest()`, `get_fastest()` and `get_average()` functions
 /// respectively.
