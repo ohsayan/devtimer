@@ -4,7 +4,7 @@ All changes in this project will be noted in this file.
 
 ## Note on semver compatibility
 
-Due to initial problems with local cargo configurations (and some automated scripts), some versions were tagged incorrectly. However, all versions **strictly follow semver since 0.3.0**. For versions **prior to `0.3.0`**, please refer to the small quote box which will indicate if the release introduces any breaking changes or not. I am very sorry for any inconvenience that this may
+Due to initial problems with local cargo configurations (and some automated scripts), some versions were tagged incorrectly. However, all versions **strictly follow semver since 3.0.0**. For versions **prior to `3.0.0`**, please refer to the small quote box which will indicate if the release introduces any breaking changes or not. I am very sorry for any inconvenience that this may
 have caused.
 
 ## Version 4.0.1
