@@ -82,7 +82,7 @@ pub struct DevTime {}
 /// use devtimer::run_benchmark;
 /// fn main() {
 ///     // Run 10 iterations
-///     let bench_result = run_benchmark(10, |_| {
+///     let bench_result = run_benchmark(10, false, |_| {
 ///         // Fake a slow operation
 ///         std::thread::sleep(std::time::Duration::from_nanos(10000));
 ///     });
@@ -91,11 +91,17 @@ pub struct DevTime {}
 /// }
 /// ```
 ///
-pub fn run_benchmark(iters: usize, function: impl Fn(usize)) -> RunThroughReport {
+pub fn run_benchmark(
+    iters: usize,
+    show_loop_count: bool,
+    function: impl Fn(usize),
+) -> RunThroughReport {
     let mut timer = DevTime::new_simple();
     let mut res = Vec::with_capacity(iters);
     for i in 0..iters {
-        println!("Running iter {} ...", i + 1);
+        if show_loop_count {
+            println!("Running iter {} ...", i + 1);
+        }
         timer.start();
         (function)(i);
         timer.stop();
@@ -428,7 +434,7 @@ fn check_complex_timer_impl() {
 #[test]
 fn test_benchmark_impl() {
     use run_benchmark;
-    let bench1 = run_benchmark(10, |_| {
+    let bench1 = run_benchmark(10, false, |_| {
         // Simulate a fake slow operation
         std::thread::sleep(time::Duration::from_secs(1));
     });
